@@ -1,10 +1,2 @@
-# Workflow-edit exemption — one exemption binds to one reviewed change.
-#
-# The change: one NEW file, .github/workflows/disarm-on-hold-label.yml, the
-# copier render of livespec's template at v0.47.3 (livespec v240). It turns a
-# pull request's auto-merge off when do-not-merge is added to it. No existing
-# workflow line is deleted or modified.
-work_item=bd-gj-hol5z5
-change=additive
-ci_runtime=no-significant-increase
-reason=ADDITIVE tier (approval:workflow-edit-additive under legacy-coordinator-agent's delegation, the tier granted for the same change on bd-ib-jdaawy 2026-11-11, recorded on bd-gj-hol5z5). Adds the hold-label disarm workflow livespec non-functional-requirements.md §"Shared content sync — copier template" makes fleet policy, inherited via constraints.md ## Inherited from livespec; without it every revise fails copier-template-workflow-coverage. It runs only on pull_request labeled events for do-not-merge (one short job), so CI runtime does not grow measurably. actionlint exit 0. Plan ci-runtime-and-cost (livespec-dev-tooling-ib3oe3).
+work_item=bd-gj-hu2pnk
+reason=MAINTAINER tier (approval:workflow-edit applied by legacy-coordinator-agent under coordinator-duties §12, 2026-11-15). Org cutover owner rename only (thewoolleyman to livespec-ai) of uses: refs, repository: checkouts, the CI container GHCR names and owner/callback lines, for held draft PR livespec-orchestrator-git-jsonl#1194 (livespec-dev-tooling-nwzkto). Runs the same jobs; no merge_group. actionlint clean against master. Also: auto-enable-merge.yml additively admits livespec-ai-factory-bot[bot] beside thewoolleyman-factory-bot[bot] (kept), release-please-- branch restriction preserved (throughput-plans-coordinator ruling 2026-11-15 09:15Z, logically additive, independent pre-transfer review finding).
