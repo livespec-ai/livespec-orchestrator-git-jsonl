@@ -3,7 +3,7 @@
 Built with [livespec](https://livespec-ai.org/)
 
 The **JSONL-backed reference realization** of
-[livespec](https://github.com/thewoolleyman/livespec)'s
+[livespec](https://github.com/livespec-ai/livespec)'s
 implementation-plugin contract, and livespec's **designated dogfood
 target**. As a Claude Code plugin it exposes the
 `/livespec-orchestrator-git-jsonl:*` impl-side skill surface — capturing
@@ -18,10 +18,10 @@ as the dogfood target (per `SPECIFICATION/spec.md` §"Purpose").
 
 Active and maintained. This is ONE realization of the abstract
 implementation-plugin contract livespec publishes in
-[`livespec/SPECIFICATION/contracts.md`](https://github.com/thewoolleyman/livespec/blob/master/SPECIFICATION/contracts.md)
+[`livespec/SPECIFICATION/contracts.md`](https://github.com/livespec-ai/livespec/blob/master/SPECIFICATION/contracts.md)
 §"Implementation-plugin contract — the 10-skill surface". Other
 realizations exist — notably
-[livespec-orchestrator-beads-fabro](https://github.com/thewoolleyman/livespec-orchestrator-beads-fabro),
+[livespec-orchestrator-beads-fabro](https://github.com/livespec-ai/livespec-orchestrator-beads-fabro),
 the family's current work-items backend. git-jsonl is not retired and
 is not the active family backend; it is the reference realization and
 the spec-side dogfood target, kept in lockstep with the livespec
@@ -35,7 +35,7 @@ This is a Claude Code plugin. It is consumed by a livespec-governed
 project, not run standalone:
 
 ```
-/plugin marketplace add thewoolleyman/livespec-orchestrator-git-jsonl
+/plugin marketplace add livespec-ai/livespec-orchestrator-git-jsonl
 /plugin install livespec-orchestrator-git-jsonl@livespec-orchestrator-git-jsonl
 ```
 
@@ -130,7 +130,7 @@ The livespec family dogfoods its own telemetry. CI runs, Red→Green commit-gate
 
 ## More
 
-- See [livespec](https://github.com/thewoolleyman/livespec) for livespec core (the contract, prose, CLIs, templates).
-- See [`livespec/SPECIFICATION/contracts.md`](https://github.com/thewoolleyman/livespec/blob/master/SPECIFICATION/contracts.md) for the implementation-plugin contract this repo realizes.
+- See [livespec](https://github.com/livespec-ai/livespec) for livespec core (the contract, prose, CLIs, templates).
+- See [`livespec/SPECIFICATION/contracts.md`](https://github.com/livespec-ai/livespec/blob/master/SPECIFICATION/contracts.md) for the implementation-plugin contract this repo realizes.
 - See [AGENTS.md](AGENTS.md) for the commit protocol and agent instructions.
 - See [SPECIFICATION/](SPECIFICATION/) for this plugin's own dogfooded spec.

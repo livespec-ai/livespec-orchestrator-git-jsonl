@@ -69,7 +69,7 @@ def test_load_manifest_parses_cross_repo_targets(tmp_path: Path) -> None:
           // sibling repos
           "cross_repo_targets": {
             "runtime": {
-              "github_url": "https://github.com/thewoolleyman/livespec-runtime",
+              "github_url": "https://github.com/livespec-ai/livespec-runtime",
               "default_branch": "main"
             }
           }
@@ -80,7 +80,7 @@ def test_load_manifest_parses_cross_repo_targets(tmp_path: Path) -> None:
     manifest = load_manifest(project_root=tmp_path)
     assert "runtime" in manifest.targets
     target = manifest.targets["runtime"]
-    assert target.github_url == "https://github.com/thewoolleyman/livespec-runtime"
+    assert target.github_url == "https://github.com/livespec-ai/livespec-runtime"
     assert target.default_branch == "main"
 
 

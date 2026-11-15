@@ -199,7 +199,7 @@ def _expected_by_prompt(*, fixtures: dict[str, FixturedSkill]) -> dict[str, tupl
 def _config() -> HarnessConfig:
     return HarnessConfig(
         impl_plugin_id="livespec-orchestrator-git-jsonl",
-        marketplace="thewoolleyman/livespec-orchestrator-git-jsonl",
+        marketplace="livespec-ai/livespec-orchestrator-git-jsonl",
         enabled_plugins=(
             "livespec@livespec",
             "livespec-orchestrator-git-jsonl@livespec-orchestrator-git-jsonl",
