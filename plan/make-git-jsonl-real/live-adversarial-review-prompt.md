@@ -157,7 +157,7 @@ while true; do
     --porcelain | sed -n '1,120p'
   gh pr list --repo thewoolleyman/livespec-orchestrator-git-jsonl \
     --state open --limit 10 --json number,title,headRefName,updatedAt,url
-  /data/projects/1password-env-wrapper/with-livespec-env.sh \
+  /usr/local/bin/with-livespec-env.sh -- \
     bd -C /data/projects/livespec show <epic-id> | sed -n '1,80p'
   sleep 120
 done

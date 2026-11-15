@@ -58,7 +58,7 @@
   // this repo's OWN work-item tracking. The livespec-orchestrator-beads-fabro
   // impl-plugin CLIs (see "implementation" above) run against this repo's Dolt
   // tenant and re-exec through this prefix when BEADS_DOLT_PASSWORD is absent,
-  // so the 1Password Environment wrapper injects the shared fleet tenant secret
+  // so the configured credential wrapper injects the shared fleet tenant secret
   // before any beads CLI runs. The git-jsonl plugin's OWN shipped CLIs read a
   // local JSONL store and need no injected secret, so they do NOT consume this
   // key. Backend-agnostic per livespec core's config schema (a non-empty array
