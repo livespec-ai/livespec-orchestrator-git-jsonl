@@ -230,11 +230,11 @@ below):
 
 ```bash
 # livespec CORE (spec-side prose + wrappers; no skills of its own):
-codex plugin marketplace add thewoolleyman/livespec
+codex plugin marketplace add livespec-ai/livespec
 codex plugin add livespec@livespec
 
 # The Codex Driver (supplies the spec-side /livespec:* operation surface):
-codex plugin marketplace add thewoolleyman/livespec-driver-codex
+codex plugin marketplace add livespec-ai/livespec-driver-codex
 codex plugin add livespec@livespec-driver-codex
 
 # This repo's orchestrator plugin (ships its OWN cross-runtime Codex surface):
@@ -424,7 +424,7 @@ discipline §"A factory or tooling BREAKAGE stops the line" (maintainer ruling
 
 **Messaging other agent sessions.** Read the fleet's distributed
 SendMessage protocol
-(<https://github.com/thewoolleyman/livespec-dev-tooling/blob/master/%2Eai/distributed-sendmessage-protocol.md>)
+(<https://github.com/livespec-ai/livespec-dev-tooling/blob/master/%2Eai/distributed-sendmessage-protocol.md>)
 before messaging, asking, directing or answering another agent session on
 any host, and before running `herdr pane send-text`, `herdr pane run`,
 `herdr agent prompt` or `tmux send-keys` against a pane you did not create.

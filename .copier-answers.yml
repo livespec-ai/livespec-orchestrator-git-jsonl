@@ -7,7 +7,7 @@
 # resolves the latest git TAG, which predates the template workflow
 # set; the fleet's blessed re-sync ref is master).
 _commit: v0.4.0
-_src_path: gh:thewoolleyman/livespec
+_src_path: gh:livespec-ai/livespec
 author_email: thewoolleyman@gmail.com
 author_name: Chad Woolley
 ecosystem: python
