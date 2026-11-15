@@ -117,7 +117,7 @@ jobs:
       && !contains(github.event.pull_request.labels.*.name, 'do-not-merge')
       && (
       contains(fromJSON('["thewoolleyman"]'), github.event.pull_request.user.login)
-      || (github.event.pull_request.user.login == 'thewoolleyman-factory-bot[bot]'
+      || (contains(fromJSON('["thewoolleyman-factory-bot[bot]", "livespec-ai-factory-bot[bot]"]'), github.event.pull_request.user.login)
       && startsWith(github.event.pull_request.head.ref, 'release-please--'))
       )
     permissions:
@@ -128,7 +128,7 @@ jobs:
       actions: read
       contents: read
       pull-requests: read
-    uses: thewoolleyman/livespec/.github/workflows/reusable-spec-pr-merge-policy.yml@v0.47.11
+    uses: livespec-ai/livespec/.github/workflows/reusable-spec-pr-merge-policy.yml@v0.47.11
     with:
       repository: ${{ github.repository }}
       pull-request: ${{ github.event.pull_request.number }}
