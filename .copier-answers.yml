@@ -11,7 +11,7 @@ _src_path: gh:livespec-ai/livespec
 author_email: thewoolleyman@gmail.com
 author_name: Chad Woolley
 ecosystem: python
-github_owner: livespec-ai
+github_owner: thewoolleyman
 github_repo: livespec-orchestrator-git-jsonl
 hydrate_cmd: uv sync --all-groups
 land_mode: pr
