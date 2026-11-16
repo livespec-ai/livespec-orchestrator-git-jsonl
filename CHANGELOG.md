@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/compare/v0.14.0...v0.14.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* **coverage:** the suite coverage omits the test modules and measures first-party source (bd-gj-w3pjkn) ([5b3a56f](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/commit/5b3a56f8873ae964c1f429338552fdbe359769f7))
+
 ## [0.14.0](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/compare/v0.13.0...v0.14.0) (2026-11-16)
 
 
