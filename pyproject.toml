@@ -276,6 +276,9 @@ exclude_also = [
 ]
 
 [tool.livespec_dev_tooling]
+# Authors whose merge-queue groups may use self-hosted capacity (read by ci.yml's
+# merge-group-guard at the group's base commit). Copied from the orchestrator.
+merge_queue_author_allowlist = ["thewoolleyman", "thewoolleyman-factory-bot", "livespec-ai-factory-bot", "livespec-ai-factory-bot[bot]"]
 repo_local_ci_skips = [
     { slug = "check-no-workflow-edits", reason = "Local and janitor authorship control; intentionally exits without checking in GitHub Actions, while remaining enforced by the local aggregate." },
 ]
