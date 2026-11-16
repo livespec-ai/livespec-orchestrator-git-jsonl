@@ -254,8 +254,9 @@ omit = [
     "*/.venv/*",
     "*/site-packages/*",
     "*/__pycache__/*",
-    "tests/e2e/*",
-    "tests/prompts/*",
+    # Test scaffolding is not first-party source: the fleet coverage policy
+    # omits all of tests/ through this blocklist (bd-gj-w3pjkn).
+    "tests/*",
     "/tmp/*",
     "mutants/*",
 ]
