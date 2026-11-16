@@ -134,3 +134,5 @@ The livespec family dogfoods its own telemetry. CI runs, Red→Green commit-gate
 - See [`livespec/SPECIFICATION/contracts.md`](https://github.com/livespec-ai/livespec/blob/master/SPECIFICATION/contracts.md) for the implementation-plugin contract this repo realizes.
 - See [AGENTS.md](AGENTS.md) for the commit protocol and agent instructions.
 - See [SPECIFICATION/](SPECIFICATION/) for this plugin's own dogfooded spec.
+
+Pull requests land on master through the livespec-ai merge queue (ruleset master-incident-recovery-bypass); ci-green is the required check.
