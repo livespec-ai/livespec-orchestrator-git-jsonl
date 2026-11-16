@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.0](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/compare/v0.13.0...v0.14.0) (2026-11-16)
+
+
+### Features
+
+* **config:** petri client moves to the 0.393 bbe693847 carrier build ([74769f8](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/commit/74769f863234ac592d416569f1ca27ec91ac4b64))
+* **config:** route petri runs and host mints through the livespec-ai org App ([24e988c](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/commit/24e988c61978fbdb0532946d92a3af4435ca52bf))
+
 ## [0.13.0](https://github.com/thewoolleyman/livespec-orchestrator-git-jsonl/compare/v0.12.2...v0.13.0) (2026-11-12)
 
 
