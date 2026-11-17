@@ -31,6 +31,8 @@ from livespec_orchestrator_git_jsonl.types import (
     WorkItemStatus,
     WorkItemType,
 )
+from returns.io import IOFailure, IOSuccess
+from returns.unsafe import unsafe_perform_io
 
 
 def _run_git(*, args: list[str], cwd: Path) -> str:
@@ -98,6 +100,14 @@ def _work_item(
         audit=audit,
         superseded_by=None,
     )
+
+
+def _canonical_branch_value(result: object) -> str:
+    """Unwrap the expected successful railway result for branch resolution."""
+    assert isinstance(result, IOSuccess)
+    value = unsafe_perform_io(result.unwrap())
+    assert isinstance(value, str)
+    return value
 
 
 def test_main_passes_when_store_absent(
@@ -415,7 +425,7 @@ def test_resolve_canonical_branch_prefers_livespec_jsonc_key(tmp_path: Path) -> 
         '// consumer config\n{"livespec-orchestrator-git-jsonl": {"canonical_branch": "trunk"}}\n',
         encoding="utf-8",
     )
-    assert resolve_canonical_branch(repo_dir=tmp_path) == "trunk"
+    assert _canonical_branch_value(resolve_canonical_branch(repo_dir=tmp_path)) == "trunk"
 
 
 def test_resolve_canonical_branch_uses_origin_head_symbolic_ref(tmp_path: Path) -> None:
@@ -425,11 +435,11 @@ def test_resolve_canonical_branch_uses_origin_head_symbolic_ref(tmp_path: Path) 
         args=["symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/main"],
         cwd=tmp_path,
     )
-    assert resolve_canonical_branch(repo_dir=tmp_path) == "main"
+    assert _canonical_branch_value(resolve_canonical_branch(repo_dir=tmp_path)) == "main"
 
 
 def test_resolve_canonical_branch_defaults_to_master_without_git(tmp_path: Path) -> None:
-    assert resolve_canonical_branch(repo_dir=tmp_path) == "master"
+    assert _canonical_branch_value(resolve_canonical_branch(repo_dir=tmp_path)) == "master"
 
 
 @pytest.mark.parametrize(
@@ -449,4 +459,21 @@ def test_resolve_canonical_branch_falls_back_on_unusable_config(
     config_text: str,
 ) -> None:
     _ = (tmp_path / ".livespec.jsonc").write_text(config_text, encoding="utf-8")
-    assert resolve_canonical_branch(repo_dir=tmp_path) == "master"
+    assert _canonical_branch_value(resolve_canonical_branch(repo_dir=tmp_path)) == "master"
+
+
+def test_resolve_canonical_branch_captures_git_oserror(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The public git boundary reports an expected operating-system failure."""
+    import livespec_orchestrator_git_jsonl.checks.work_item_merge_evidence as subject
+
+    def _raise_oserror(*args: object, **kwargs: object) -> object:
+        _ = (args, kwargs)
+        raise OSError("git unavailable")
+
+    monkeypatch.setattr(subject.subprocess, "run", _raise_oserror)
+    result = resolve_canonical_branch(repo_dir=tmp_path)
+    assert isinstance(result, IOFailure)
+    assert isinstance(unsafe_perform_io(result.failure()), OSError)
