@@ -52,3 +52,10 @@ Rules an agent editing this tree must follow:
 - The task runner (`justfile`) is the single source of truth for
   dev-tooling invocations; hooks delegate via `lefthook` →
   `just <target>`, never by calling tools directly.
+- Run any gate command (`just check`, a commit that fires the pre-commit
+  aggregate, a push that fires the pre-push gate) DETACHED through `just
+  gate-start -- <command>` and read the verdict with `just gate-wait
+  <run-id>`. A foreground call can outlast the harness's tool-call ceiling,
+  and that kill produces no verdict and looks exactly like a hook refusal;
+  `gate-wait` exits with the gate's own exit code, or `75` for
+  `DIED_WITHOUT_VERDICT`.
