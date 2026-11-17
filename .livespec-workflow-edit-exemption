@@ -1,2 +1,2 @@
-work_item=bd-gj-ypjb7p
-reason=Guarded merge_group trigger so the org merge queue can run (plan stale-base-merge-options, carrier livespec-dev-tooling-frkuef; maintainer ruling 2026-11-16 to enable the merge queue in every org repo; throughput-plans-coordinator ruled it logically additive). Adds the merge_group trigger and the merge-group-guard job, and routes each gating job's runs-on through the guard output with the same hosted fallback; trusted arm keeps the existing expression. actionlint clean.
+work_item=bd-gj-kysa2b
+reason=Merge-group tree-equality skip rollout (plan stale-base-merge-options, epic livespec-dev-tooling-xowhol, carrier livespec-dev-tooling-ymog6r): the guard job gains a skip output decided by livespec-dev-tooling's merge_group_skip module from the pinned release tarball, and every gating job's if gains the skip term; ratified by the maintainer 2026-11-16; tier is maintainer.
