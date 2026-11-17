@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/compare/v0.14.1...v0.15.0) (2026-11-17)
+
+
+### Features
+
+* red ([7a092d4](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/commit/7a092d446411cdf3103ef4127618bee6f670770c))
+
 ## [0.14.1](https://github.com/livespec-ai/livespec-orchestrator-git-jsonl/compare/v0.14.0...v0.14.1) (2026-11-16)
 
 
