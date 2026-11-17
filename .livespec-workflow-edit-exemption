@@ -1,2 +1,0 @@
-work_item=bd-gj-kysa2b
-reason=Merge-group tree-equality skip rollout (plan stale-base-merge-options, epic livespec-dev-tooling-xowhol, carrier livespec-dev-tooling-ymog6r): the guard job gains a skip output decided by livespec-dev-tooling's merge_group_skip module from the pinned release tarball, and every gating job's if gains the skip term; ratified by the maintainer 2026-11-16; tier is maintainer.
