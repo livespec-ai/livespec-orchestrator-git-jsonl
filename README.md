@@ -114,7 +114,9 @@ just check       # full enforcement aggregate (lint, types, tests, coverage, AST
 ```
 
 `just check` is the load-bearing safety net — it runs locally, in
-pre-push, and in CI. The repo follows the livespec-family conventions:
+pre-push, and in CI. Run it detached (`just gate-start -- just check`, then
+`just gate-wait <run-id>`), because a foreground run can outlast the
+harness's tool-call ceiling and leave no verdict. The repo follows the livespec-family conventions:
 `.mise.toml` pins the non-Python binaries (uv, just, lefthook), the
 justfile is the single entry point for every check, lefthook delegates
 to `just`, and the primary checkout refuses direct commits (work
