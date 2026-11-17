@@ -877,6 +877,7 @@ jobs:
           just check-canonical-recipe-fidelity || failed="$failed check-canonical-recipe-fidelity"
           just check-check-tools || failed="$failed check-check-tools"
           just check-ci-matrix-completeness || failed="$failed check-ci-matrix-completeness"
+          just check-aggregate-runner-parity || failed="$failed check-aggregate-runner-parity"
           just check-ci-gate-parity || failed="$failed check-ci-gate-parity"
           just check-comment-line-anchors || failed="$failed check-comment-line-anchors"
           just check-commit-pairs-source-and-test || failed="$failed check-commit-pairs-source-and-test"
