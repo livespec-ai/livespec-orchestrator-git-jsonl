@@ -1,0 +1,15 @@
+# Workflow-edit exemption: one exemption binds to one reviewed change.
+#
+# The change (bd-gj-jc0, DoD 10 row 10 of plan stale-base-merge-options, epic
+# livespec-dev-tooling-xowhol): ci.yml's check-metadata-batch run list gains ONE line,
+# `just check-aggregate-runner-parity || failed=...`, so the new repo-local aggregate slug
+# is run by a CI job. Without it check-ci-matrix-completeness exits 4
+# (ci-matrix-missing-repo-local-slug) on PR head 1b54abe and ci-green fails; on master
+# 2698077 it exits 0. The edit ONLY adds one line to an existing job; no existing line is
+# deleted or modified. The check is a pure bash parity check (justfile
+# LIVESPEC_AGGREGATE_TARGETS vs just-check.sh --list-targets) of well under a second.
+# Coordinator decision under coordinator-duties section 12, logically additive.
+work_item=bd-gj-jc0
+reason=Wire the new repo-local aggregate slug check-aggregate-runner-parity into check-metadata-batch so check-ci-matrix-completeness passes; one added line, nothing modified or deleted; coordinator-decided additive tier.
+change=additive
+ci_runtime=no-significant-increase
