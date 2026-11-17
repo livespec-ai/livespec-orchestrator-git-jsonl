@@ -136,3 +136,5 @@ The livespec family dogfoods its own telemetry. CI runs, Red→Green commit-gate
 - See [SPECIFICATION/](SPECIFICATION/) for this plugin's own dogfooded spec.
 
 Pull requests land on master through the livespec-ai merge queue (ruleset master-incident-recovery-bypass); ci-green is the required check.
+
+A merge group that holds exactly one pull request whose tree is byte-identical to that pull request's head tree, on a base the head contains and with every required check already green on the head, skips the full suite and still reports `ci-green` (the guard job decides this on every merge group, using livespec-dev-tooling's `merge_group_skip` at the pinned release). Every other merge group runs the full suite. Setting the repository variable `LIVESPEC_MERGE_GROUP_SKIP_DISABLED` to `true` forces the full suite on every merge group.
