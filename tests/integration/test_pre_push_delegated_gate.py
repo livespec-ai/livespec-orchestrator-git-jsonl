@@ -53,6 +53,7 @@ def _run_pre_push(
     tmp_path: Path,
     enabled_exit: int,
     run_exit: int,
+    token_exit: int = 1,
 ) -> tuple[subprocess.CompletedProcess[str], list[str], list[str]]:
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir(parents=True)
@@ -67,7 +68,7 @@ def _run_pre_push(
 set -euo pipefail
 printf '%s\\n' "$*" >> "{uv_log}"
 case "$*" in
-  "run python -m livespec_dev_tooling.green_token check") exit 1 ;;
+  "run python -m livespec_dev_tooling.green_token check") exit {token_exit} ;;
   "run python -m {_CLIENT} enabled") exit {enabled_exit} ;;
   "run python -m {_CLIENT} run") exit {run_exit} ;;
 esac
@@ -208,3 +209,14 @@ exit 99
     assert completed.returncode != 0
     assert "check-fixture-bare" in completed.stdout + completed.stderr
     assert not invoked.exists(), "the purity audit must refuse before dispatching a member"
+
+
+def test_green_token_match_still_runs_the_gate(tmp_path: Path) -> None:
+    """A token match must not skip members that read state outside the tree."""
+    completed, just_calls, uv_calls = _run_pre_push(
+        tmp_path=tmp_path, enabled_exit=1, run_exit=1, token_exit=0
+    )
+
+    assert completed.returncode == 0
+    assert "NOT skipping the aggregate" in completed.stdout
+    assert "check" in just_calls
