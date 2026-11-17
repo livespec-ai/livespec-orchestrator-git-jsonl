@@ -45,7 +45,7 @@ import sys
 from pathlib import Path
 from typing import Any, Final, cast
 
-from returns.io import IOSuccess
+from returns.io import IOFailure, IOSuccess, impure_safe
 from returns.unsafe import unsafe_perform_io
 
 from livespec_orchestrator_git_jsonl.commands._config import resolve_store_config
@@ -86,11 +86,12 @@ def main(*, argv: list[str] | None = None) -> int:
         work_items_arg=args.work_items_path,
     )
     repo_dir = config.work_items_path.parent
-    canonical_branch: str = (
-        args.canonical_branch
-        if args.canonical_branch is not None
-        else resolve_canonical_branch(repo_dir=repo_dir)
+    canonical_branch = _canonical_branch_or_none(
+        explicit_branch=args.canonical_branch,
+        repo_dir=repo_dir,
     )
+    if canonical_branch is None:
+        return 1
 
     notes, failures = _load_findings(
         work_items_path=config.work_items_path,
@@ -107,6 +108,18 @@ def main(*, argv: list[str] | None = None) -> int:
         f"{_CHECK_NAME}: OK — every closed work-item carries conformant merge-evidence\n"
     )
     return 0
+
+
+def _canonical_branch_or_none(*, explicit_branch: str | None, repo_dir: Path) -> str | None:
+    """Resolve the CLI's branch input, reporting an expected I/O failure."""
+    if explicit_branch is not None:
+        return explicit_branch
+    result = resolve_canonical_branch(repo_dir=repo_dir)
+    if isinstance(result, IOFailure):
+        failure = unsafe_perform_io(result.failure())
+        _ = sys.stdout.write(f"{_CHECK_NAME}: unable to resolve canonical branch — {failure}\n")
+        return None
+    return unsafe_perform_io(result.unwrap())
 
 
 def _load_findings(
@@ -152,6 +165,7 @@ def _evidence_failures(
     return failures
 
 
+@impure_safe(exceptions=(OSError,))
 def resolve_canonical_branch(*, repo_dir: Path) -> str:
     """Resolve the canonical branch per the `compat`-block contract.
 
