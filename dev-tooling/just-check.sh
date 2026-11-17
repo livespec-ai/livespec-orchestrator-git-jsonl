@@ -12,12 +12,40 @@ fi
 export UV_NO_SYNC=1
 
 skip_targets=("$@")
-mapfile -t targets < <(
-    sed -E 's/[[:space:]]*#.*$//; s/^[[:space:]]+//; s/[[:space:]]+$//' check-targets.txt \
-        | grep -E '^check-' || true
-)
+repo_root="$(CDPATH='' cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+aggregate_targets() {
+    awk '
+        !marker && index($0, "LIVESPEC_AGGREGATE_TARGETS") {
+            marker = 1
+            next
+        }
+        marker && !in_targets && $0 ~ /^[[:space:]]*targets=\([[:space:]]*$/ {
+            in_targets = 1
+            next
+        }
+        in_targets && $0 ~ /^[[:space:]]*\)[[:space:]]*$/ {
+            exit
+        }
+        in_targets {
+            line = $0
+            sub(/[[:space:]]*#.*/, "", line)
+            sub(/^[[:space:]]+/, "", line)
+            sub(/[[:space:]]+$/, "", line)
+            if (line ~ /^check-/) {
+                print line
+            }
+        }
+    ' "$repo_root/justfile"
+}
+
+if [[ ${1:-} == "--list-targets" ]]; then
+    aggregate_targets
+    exit 0
+fi
+
+mapfile -t targets < <(aggregate_targets)
 if [[ ${#targets[@]} -eq 0 ]]; then
-    echo "ERROR: check-targets.txt declares no check aggregate members" >&2
+    echo "ERROR: justfile LIVESPEC_AGGREGATE_TARGETS declares no check aggregate members" >&2
     exit 1
 fi
 
@@ -53,16 +81,6 @@ for target in "${targets[@]}"; do
         failed+=("$target")
     fi
 done
-
-printf '\n::: just install-worktree-pack (branch-protection prerequisite)\n'
-if ! just install-worktree-pack; then
-    failed+=("install-worktree-pack")
-else
-    printf '\n::: just check-branch-protection (server-side worktree-discipline tripwire)\n'
-    if ! just check-branch-protection; then
-        failed+=("check-branch-protection")
-    fi
-fi
 
 if [[ ${#failed[@]} -gt 0 ]]; then
     printf '\nFailed targets (%d):\n' "${#failed[@]}"
