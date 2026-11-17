@@ -36,13 +36,21 @@ hex32() { printf '%032x' "$1"; }            # 16-byte trace id
 hex16() { printf '%016x' "$1"; }            # 8-byte span id
 
 run_json="$(gh run view "$RUN_ID" --repo "$REPO" \
-  --json databaseId,headSha,headBranch,event,displayTitle,conclusion,createdAt,startedAt,updatedAt,jobs)"
+  --json databaseId,attempt,headSha,headBranch,event,displayTitle,conclusion,createdAt,startedAt,updatedAt,jobs)"
+
+# Per-job queue time: `gh run view`'s jobs projection carries startedAt but NOT
+# created_at, so the wait-for-runner interval is invisible. The REST jobs
+# endpoint carries both; build an id -> created_at map once (mirrors
+# livespec-dev-tooling).
+job_created_json="$(gh api "repos/$REPO/actions/runs/$RUN_ID/jobs?per_page=100" --paginate \
+  -q '[.jobs[] | {id: .id, created_at: .created_at}]' | jq -sc 'add // []')"
 
 trace_id="$(hex32 "$RUN_ID")"
 run_span_id="$(hex16 "$RUN_ID")"
 run_start="$(iso_to_nanos "$(jq -r '.startedAt // .createdAt' <<<"$run_json")")"
 run_end="$(iso_to_nanos "$(jq -r '.updatedAt' <<<"$run_json")")"
 run_concl="$(jq -r '.conclusion // ""' <<<"$run_json")"
+run_attempt="$(jq -r '.attempt // 1' <<<"$run_json")"
 run_code=2; [ "$run_concl" = "success" ] && run_code=1
 
 # `$run_json` carries the whole `jobs` array and MUST reach jq on stdin, never
@@ -60,12 +68,13 @@ run_code=2; [ "$run_concl" = "success" ] && run_code=1
 run_span="$(jq -c \
   --arg trace "$trace_id" --arg span "$run_span_id" \
   --arg start "$run_start" --arg end "$run_end" \
-  --arg repo "$REPO" --argjson run_id "$RUN_ID" --argjson code "$run_code" '
+  --arg repo "$REPO" --argjson run_id "$RUN_ID" --argjson run_attempt "$run_attempt" --argjson code "$run_code" '
   {traceId:$trace, spanId:$span, name:"ci.run", kind:1,
    startTimeUnixNano:$start, endTimeUnixNano:$end,
    attributes:[
      {key:"repo",value:{stringValue:$repo}},
      {key:"ci.run_id",value:{intValue:($run_id|tostring)}},
+     {key:"ci.run_attempt",value:{intValue:($run_attempt|tostring)}},
      {key:"ci.conclusion",value:{stringValue:(.conclusion // "")}},
      {key:"ci.title",value:{stringValue:(.displayTitle // "")}},
      {key:"git.commit.sha",value:{stringValue:(.headSha // "")}},
@@ -73,6 +82,9 @@ run_span="$(jq -c \
      {key:"ci.event",value:{stringValue:(.event // "")}}
    ],
    status:{code:$code}}' <<<"$run_json")"
+
+run_branch="$(jq -r '.headBranch // ""' <<<"$run_json")"
+run_event="$(jq -r '.event // ""' <<<"$run_json")"
 
 job_spans="[]"
 while IFS=$'\t' read -r jid jname jconcl jstart_iso jend_iso; do
@@ -82,18 +94,33 @@ while IFS=$'\t' read -r jid jname jconcl jstart_iso jend_iso; do
   jstart="$(iso_to_nanos "$jstart_iso")"
   jend="$(iso_to_nanos "$jend_iso")"
   jcode=2; [ "$jconcl" = "success" ] && jcode=1
+  # queue_ms: started_at - created_at from the REST map; 0 when the map has no
+  # row (a missing row must not drop the span).
+  jcreated_iso="$(jq -r --argjson id "$jid" '.[] | select(.id == $id) | .created_at // empty' <<<"$job_created_json")"
+  jqueue_ms=0
+  if [ -n "$jcreated_iso" ]; then
+    jcreated="$(iso_to_nanos "$jcreated_iso")"
+    jqueue_ms=$(( (jstart - jcreated) / 1000000 ))
+    [ "$jqueue_ms" -ge 0 ] || jqueue_ms=0
+  fi
   span="$(jq -nc \
     --arg trace "$trace_id" --arg span "$jspan_id" --arg parent "$run_span_id" \
     --arg name "ci.job.$jname" --arg start "$jstart" --arg end "$jend" \
-    --arg repo "$REPO" --argjson run_id "$RUN_ID" \
+    --arg repo "$REPO" --argjson run_id "$RUN_ID" --argjson run_attempt "$run_attempt" \
+    --argjson jqueue "$jqueue_ms" \
+    --arg branch "$run_branch" --arg event "$run_event" \
     --arg jname "$jname" --arg jconcl "$jconcl" --argjson code "$jcode" '
     {traceId:$trace, spanId:$span, parentSpanId:$parent, name:$name, kind:1,
      startTimeUnixNano:$start, endTimeUnixNano:$end,
      attributes:[
        {key:"repo",value:{stringValue:$repo}},
        {key:"ci.run_id",value:{intValue:($run_id|tostring)}},
+       {key:"ci.run_attempt",value:{intValue:($run_attempt|tostring)}},
        {key:"ci.job.name",value:{stringValue:$jname}},
-       {key:"ci.job.conclusion",value:{stringValue:$jconcl}}
+       {key:"ci.job.conclusion",value:{stringValue:$jconcl}},
+       {key:"ci.job.queue_ms",value:{intValue:($jqueue|tostring)}},
+       {key:"git.branch",value:{stringValue:$branch}},
+       {key:"ci.event",value:{stringValue:$event}}
      ],
      status:{code:$code}}')"
   job_spans="$(jq -c ". + [$span]" <<<"$job_spans")"
