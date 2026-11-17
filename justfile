@@ -341,6 +341,7 @@ check:
         check-work-item-interpolation-delimiters
         check-work-item-status-vocabulary
         check-wrapper-shape
+        check-aggregate-runner-parity
         check-format
         check-lint
         check-types
@@ -479,6 +480,9 @@ check-agents-ai-references-resolve:
 # next run.
 check-aggregate-completeness:
     uv run python -m livespec_dev_tooling.checks.aggregate_completeness
+
+check-aggregate-runner-parity:
+    bash dev-tooling/check-aggregate-runner-parity.sh
 
 check-all-declared:
     uv run python -m livespec_dev_tooling.checks.all_declared

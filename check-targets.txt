@@ -79,6 +79,7 @@ check-work-item-status-vocabulary
 check-wrapper-shape
 
 # Repository-private members: measured from their actual read sets.
+check-aggregate-runner-parity  # purity: tree-pure
 check-format  # purity: tree-pure
 check-lint  # purity: tree-pure
 check-types  # purity: tree-pure
