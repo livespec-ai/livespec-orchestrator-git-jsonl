@@ -297,7 +297,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -371,7 +371,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -409,7 +409,7 @@ jobs:
 
       - name: Publish the flake-retry records for the host-side reader
         if: ${{ !cancelled() }}
-        uses: livespec-ai/livespec-dev-tooling/.github/actions/publish-flake-retries@v1.234.1
+        uses: livespec-ai/livespec-dev-tooling/.github/actions/publish-flake-retries@v1.237.0
         with:
           suffix: per-file
 
@@ -440,7 +440,7 @@ jobs:
     if: ${{ !cancelled() && needs.check-per-file-coverage.result == 'success' && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -497,7 +497,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -558,7 +558,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -618,7 +618,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -744,7 +744,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -783,7 +783,7 @@ jobs:
 
       - name: Publish the flake-retry records for the host-side reader
         if: ${{ !cancelled() }}
-        uses: livespec-ai/livespec-dev-tooling/.github/actions/publish-flake-retries@v1.234.1
+        uses: livespec-ai/livespec-dev-tooling/.github/actions/publish-flake-retries@v1.237.0
         with:
           suffix: e2e-cli
 
@@ -800,7 +800,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -848,6 +848,7 @@ jobs:
           just check-delegated-job-authority-skip || failed="$failed check-delegated-job-authority-skip"
           just check-handoff-dispatch-routing || failed="$failed check-handoff-dispatch-routing"
           just check-heading-coverage-debt-register || failed="$failed check-heading-coverage-debt-register"
+          just check-hook-template-sandbox-image-path || failed="$failed check-hook-template-sandbox-image-path"
           just check-hook-trees-not-io-exempt || failed="$failed check-hook-trees-not-io-exempt"
           just check-local-memory-drift-audit || failed="$failed check-local-memory-drift-audit"
           just check-marketplace-ref-release-only || failed="$failed check-marketplace-ref-release-only"
@@ -898,7 +899,7 @@ jobs:
     if: ${{ !cancelled() && needs.merge-group-guard.outputs.skip != 'true' }}
     runs-on: ${{ needs.merge-group-guard.outputs.trusted == 'true' && fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.234.1
+      image: ghcr.io/livespec-ai/livespec-fabro-sandbox:python-v1.237.0
     env:
       MISE_DATA_DIR: /root/.local/share/mise
       MISE_NOT_FOUND_AUTO_INSTALL: "0"
@@ -926,7 +927,7 @@ jobs:
 
       - name: Publish the flake-retry records for the host-side reader
         if: ${{ !cancelled() }}
-        uses: livespec-ai/livespec-dev-tooling/.github/actions/publish-flake-retries@v1.234.1
+        uses: livespec-ai/livespec-dev-tooling/.github/actions/publish-flake-retries@v1.237.0
         with:
           suffix: acceptance
 
