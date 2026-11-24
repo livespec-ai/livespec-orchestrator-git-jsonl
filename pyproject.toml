@@ -73,7 +73,7 @@ dev = [
 # canonical PURE reducer THIS repo donated + the WorkItemStore
 # conformance Protocol — see store.py / types.py / _ids.py).
 [tool.uv.sources]
-livespec-dev-tooling = { git = "https://github.com/livespec-ai/livespec-dev-tooling.git", tag = "v1.234.1" }
+livespec-dev-tooling = { git = "https://github.com/livespec-ai/livespec-dev-tooling.git", tag = "v1.237.1" }
 livespec-runtime = { git = "https://github.com/livespec-ai/livespec-runtime.git", tag = "v0.28.0" }
 
 # ---------------------------------------------------------------------------
